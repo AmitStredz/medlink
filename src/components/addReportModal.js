@@ -44,7 +44,7 @@ const AddReportModal = ({ id, onClose, onSuccess }) => {
 
     try {
       const response = await axios.post(
-        "https://medlink-zavgk.ondigitalocean.app/api/records/",
+        "https://medconnect-co7la.ondigitalocean.app/api/records/",
         data
       );
 

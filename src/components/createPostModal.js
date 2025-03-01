@@ -23,7 +23,7 @@ const CreatePostModal = ({ onClose, fetchData }) => {
 
     try {
       const response = await axios.post(
-        "https://medlink-zavgk.ondigitalocean.app/api/posts/",
+        "https://medconnect-co7la.ondigitalocean.app/api/posts/",
         {
           title: title.trim(),
           desc: description.trim(),
