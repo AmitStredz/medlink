@@ -165,7 +165,7 @@ export default function Login() {
 
         {/* Footer */}
         <div className="text-center mt-8 text-sm text-gray-500">
-          <p>© 2024 MediLink. All rights reserved.</p>
+          <p>© 2024 MedLink. All rights reserved.</p>
           <div className="mt-2">
             <a href="#privacy" className="hover:text-blue-500 transition-colors">
               Privacy Policy
