@@ -61,7 +61,7 @@ export default function Login() {
           <div className="flex items-center justify-center gap-2 mb-4">
             <RiPulseLine className="text-4xl text-blue-500" />
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-              MediLink
+              MedLink
             </h1>
           </div>
           <p className="text-gray-600">
