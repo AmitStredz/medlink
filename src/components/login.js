@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import { RiPulseLine } from "react-icons/ri";
-import { FaUserMd, FaLock, FaSpinner } from "react-icons/fa";
+import { FaUserMd, FaLock, FaSpinner, FaInfoCircle } from "react-icons/fa";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -14,6 +14,11 @@ export default function Login() {
     password: "",
   });
   const [error, setError] = useState("");
+  const [loginAttempts, setLoginAttempts] = useState(0);
+
+  // Demo credentials
+  const DEMO_USERNAME = "demouser";
+  const DEMO_PASSWORD = "demo123";
 
   const handleChange = (e) => {
     setFormData({
@@ -30,6 +35,21 @@ export default function Login() {
     setIsLoading(true);
     setError("");
 
+    // Check if demo credentials are used
+    if (formData.username === DEMO_USERNAME && formData.password === DEMO_PASSWORD) {
+      // Create a dummy token for demo login
+      const demoToken = "demo_token_" + Date.now();
+      localStorage.setItem("key", demoToken);
+      login(demoToken);
+      
+      // Short delay to simulate login process
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 500);
+      
+      return;
+    }
+
     try {
       const response = await axios.post(
         "https://medlink-zavgk.ondigitalocean.app/api/auth/login/",
@@ -42,12 +62,31 @@ export default function Login() {
         navigate("/dashboard");
       } else {
         setError("Invalid response from server");
+        setLoginAttempts(prev => prev + 1);
       }
     } catch (error) {
-      setError(
-        error.response?.data?.message || 
-        "Invalid credentials. Please try again."
-      );
+      console.error("Login error:", error);
+      
+      // Handle different error scenarios
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        if (error.response.status === 401) {
+          setError("Invalid username or password. Please try again.");
+        } else if (error.response.data?.message) {
+          setError(error.response.data.message);
+        } else {
+          setError(`Server error (${error.response.status}). Please try again later.`);
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        setError("No response from server. Please check your internet connection.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError("An unexpected error occurred. Please try again.");
+      }
+      
+      setLoginAttempts(prev => prev + 1);
     } finally {
       setIsLoading(false);
     }
@@ -143,6 +182,23 @@ export default function Login() {
                 "Sign In"
               )}
             </button>
+
+            {/* Demo Credentials Section */}
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+              <div className="flex items-center gap-2 text-blue-700 font-medium mb-1">
+                <FaInfoCircle />
+                <span>Demo Credentials</span>
+              </div>
+              <p className="text-sm text-gray-600">
+                Try out the system with these demo credentials:
+              </p>
+              <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+                <div className="font-medium text-gray-700">Username:</div>
+                <div className="text-gray-600">{DEMO_USERNAME}</div>
+                <div className="font-medium text-gray-700">Password:</div>
+                <div className="text-gray-600">{DEMO_PASSWORD}</div>
+              </div>
+            </div>
 
             {/* Additional Links */}
             <div className="text-center text-sm text-gray-500">

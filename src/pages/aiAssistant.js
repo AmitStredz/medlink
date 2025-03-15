@@ -28,7 +28,7 @@ export default function AiAssistant() {
     const key = localStorage.getItem("key");
 
     if (!key) {
-      alert("Key not found...");
+      console.log("Key not found...");
       setIsLoading(false);
       return;
     }
@@ -50,7 +50,7 @@ export default function AiAssistant() {
       }
     } catch (error) {
       console.log("Error occurred: ", error);
-      alert("No Patient data found...");
+      console.log("No Patient data found...");
     } finally {
       setIsLoading(false);
     }

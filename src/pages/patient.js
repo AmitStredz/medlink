@@ -51,7 +51,7 @@ export default function Patient() {
       }
     } catch (error) {
       console.log("Error occurred: ", error);
-      alert("No Patient data found...");
+      console.log("No Patient data found...");
     } finally {
       setIsLoading(false);
     }
